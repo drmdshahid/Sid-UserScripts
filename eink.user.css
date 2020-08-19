@@ -1,0 +1,56 @@
+/* ==UserStyle==
+@name           BW_Eink
+@description    Optimize pages for eink display.
+@namespace      shahidhome
+@version        0.1.0
+@author         Shahid
+@homepageURL	shahidhome.rf.gd
+@license      	cc
+@preprocessor 	stylus
+
+@var	checkbox	bw	"just b/w"	1
+==/UserStyle== */
+
+@-moz-document domain("sourceforge.com") {
+    
+*{
+    mix-blend-mode: luminosity;
+    /*isolation: isolate;
+    
+    background-color: rgba(255,255,255,0.7) !important;
+    color: black !important;
+    */
+
+}
+
+img {
+  filter:grayscale(100%);
+}
+
+input, textarea, select
+{
+  color: black !important;
+  background: rgb(240,240,240) !important;
+}
+
+button, input[type="file"], input[type="submit"], input[type="button"], input[type="reset"], .button
+{
+  color: black !important;
+  background: silver !important;
+    border-color: grey !important;
+}
+
+a[href]
+{
+  text-decoration: underline !important;
+}
+
+a[href] img
+{
+  border: thin solid silver !important;
+}
+
+svg{
+    background-color: rgba(125,125,125,0.7) !important;
+}
+}
