@@ -2,6 +2,7 @@
 // @name         RFA MRCOG tutorials
 // @namespace    http://tampermonkey.net/
 // @version      2024-08-18_1
+// @downloadURL    
 // @description  Download course (canvas to PDF/html) from RFA Tutorials
 // @author       Shahid
 // @match        https://cdn.talentlms.com/rfatutors/*
