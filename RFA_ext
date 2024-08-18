@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         RFA MRCOG tutorials
 // @namespace    http://tampermonkey.net/
-// @version      2024-08-18_1
+// @version      1.2
 // @updateURL    https://github.com/drmdshahid/Sid-UserScripts/blob/6bac70558beb30f19df75df9ee88521ce5458452/RFA_ext
 // @downloadURL    https://github.com/drmdshahid/Sid-UserScripts/blob/6bac70558beb30f19df75df9ee88521ce5458452/RFA_ext
 // @description  Download course (canvas to PDF/html) from RFA Tutorials
