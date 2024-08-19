@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         RFA MRCOG tutorials
 // @namespace    https://github.com/drmdshahid
-// @version      1.4
+// @version      1.5
 // @description  Download course (canvas to PDF/html) from RFA Tutorials
 // @author       Shahid
 // @match        https://cdn.talentlms.com/rfatutors/*
@@ -10,7 +10,7 @@
 // @run-at       context-menu
 // ==/UserScript==
 
-(function() {
+(function () {
     'use strict';
 
     // Your code here...
@@ -44,18 +44,18 @@
     for (let i of pagelist.entries()) {
         i[1].setAttribute("data-pgn", i[0]);
         const myImage = new Image(780); // based on 210mm x 297mm with 96dpi = 794,1123
-        myImage.id = "i"+i[0];
-        myImage.alt = i[0]+1;
+        myImage.id = "i" + i[0];
+        myImage.alt = i[0] + 1;
         container.appendChild(myImage);
 
     }
 
 
-    var a = document.querySelector("div.mainContainer > div.toolbar div.viewerToolbarContainer").appendChild( document.createElement("a") );
-    a.innerText='html⏬'
-    a.download = txtinurl +".html";
-    a.href="data:text/html,";
-    a.onmouseleave = function(){
+    var a = document.querySelector("div.mainContainer > div.toolbar div.viewerToolbarContainer").appendChild(document.createElement("a"));
+    a.innerText = 'html⏬'
+    a.download = txtinurl + ".html";
+    a.href = "data:text/html,";
+    a.onmouseleave = function () {
         a.href = "data:text/html," + document.getElementById("to-print").innerHTML;
         a.style.background = 'yellow';
     };
@@ -64,16 +64,16 @@
     // save
 
     function save(dt, i) {
-        var anch = document.querySelector("#a"+i);
+        var anch = document.querySelector("#a" + i);
         anch.innerText += dt.substr(5, 25);
-        if ( dt.split(",")[0] == "data:image/png;base64" ){
+        if (dt.split(",")[0] == "data:image/png;base64") {
             // varification...
             anch.href = dt;
-            document.querySelector("#i"+i).src = dt;
+            document.querySelector("#i" + i).src = dt;
             //console.log("saving:" + i + ":"+ dt.substr(5, 25));
             anch.style.color = 'green';
         } else {
-            console.error("error:"+i);
+            console.error("error:" + i);
             anch.style.color = 'red';
         }
 
@@ -93,19 +93,19 @@
             var link = document.createElement('a');
             link.id = "a" + i;
             link.className = "download";
-            link.innerText = i+"🔽" ;
+            link.innerText = i + "🔽";
             link.download = txtinurl + '-' + i + '.png';
             link.href = "#";
 
             setTimeout(() => {
                 // var dt = can.toDataURL("image/png");
-                save(can.toDataURL("image/png"),i);
+                save(can.toDataURL("image/png"), i);
 
-            }, 500);
+            }, 750);
 
             // as to refresh the link...
-            link.onmouseleave = function(){
-                save(can.toDataURL("image/png"),i);
+            link.onmouseleave = function () {
+                save(can.toDataURL("image/png"), i);
                 link.style.backgroung = 'yellow';
             };
 
@@ -133,10 +133,7 @@
               console.info("A child node has been added or removed.");
             } */
             for (const addedNode of mutation.addedNodes) {
-                addedNode.onload = function(){
-                    setTimeout(() => { addUI(addedNode); }, 500);
-                    
-                }
+                    setTimeout(() => { addUI(addedNode); }, 750);
             }
 
         }
@@ -150,7 +147,7 @@
 
     function attachobserver(el) {
         observer.observe(el, config);
-        if(el.querySelector("canvas.content") != null){
+        if (el.querySelector("canvas.content") != null) {
             addUI(el.querySelector("canvas.content"));
         }
     }
