@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         RFA MRCOG tutorials
 // @namespace    https://github.com/drmdshahid
-// @version      1.3
+// @version      1.4
 // @description  Download course (canvas to PDF/html) from RFA Tutorials
 // @author       Shahid
 // @match        https://cdn.talentlms.com/rfatutors/*
@@ -55,7 +55,7 @@
     a.innerText='html⏬'
     a.download = txtinurl +".html";
     a.href="data:text/html,";
-    a.onmouseover = function(){
+    a.onmouseleave = function(){
         a.href = "data:text/html," + document.getElementById("to-print").innerHTML;
         a.style.background = 'yellow';
     };
@@ -65,12 +65,12 @@
 
     function save(dt, i) {
         var anch = document.querySelector("#a"+i);
-
-        if ( dt.split(";")[0] == "data:image/png" ){
+        anch.innerText += dt.substr(5, 25);
+        if ( dt.split(",")[0] == "data:image/png;base64" ){
             // varification...
             anch.href = dt;
             document.querySelector("#i"+i).src = dt;
-            console.log("saving:" + i + ":"+ dt.substr(5, 25));
+            //console.log("saving:" + i + ":"+ dt.substr(5, 25));
             anch.style.color = 'green';
         } else {
             console.error("error:"+i);
@@ -93,36 +93,24 @@
             var link = document.createElement('a');
             link.id = "a" + i;
             link.className = "download";
-            link.innerText = "Download🔽" + i;
+            link.innerText = i+"🔽" ;
             link.download = txtinurl + '-' + i + '.png';
             link.href = "#";
 
             setTimeout(() => {
                 // var dt = can.toDataURL("image/png");
                 save(can.toDataURL("image/png"),i);
-                /*                 if ( dt.split(";")[0] == "data:image/png" ){
-                    // varification...
-                    link.href = dt;
-                    console.log("saving:" + i + dt.substr(5, 10));
-                    document.querySelector("#i"+i).src = dt;
-                    link.style.color = 'green';
-                } else {
-                    console.error("error:"+i);
-                    link.style.color = 'red';
-                } */
 
-            }, 1000);
+            }, 500);
 
             // as to refresh the link...
-            link.onmouseover = function(){
-                // link.href = can.toDataURL("image/png");
-                // document.querySelector("#i"+i).src = can.toDataURL("image/png");
+            link.onmouseleave = function(){
                 save(can.toDataURL("image/png"),i);
                 link.style.backgroung = 'yellow';
             };
 
             p.appendChild(link);
-            //link.style.background = "#f3f3f3";
+
         }
 
 
@@ -145,7 +133,10 @@
               console.info("A child node has been added or removed.");
             } */
             for (const addedNode of mutation.addedNodes) {
-                addUI(addedNode);
+                addedNode.onload = function(){
+                    setTimeout(() => { addUI(addedNode); }, 500);
+                    
+                }
             }
 
         }
