@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         RFA MRCOG tutorials
 // @namespace    https://github.com/drmdshahid
-// @version      1.5
+// @version      1.6
 // @description  Download course (canvas to PDF/html) from RFA Tutorials
 // @author       Shahid
 // @match        https://cdn.talentlms.com/rfatutors/*
@@ -16,7 +16,7 @@
     // Your code here...
 
 
-
+// cosmetics and print view config
     var style = document.createElement("style");
     document.head.appendChild(style);
     style.sheet.insertRule(".toolbar { background: radial-gradient(#004967, transparent); }");
@@ -27,6 +27,8 @@
     var txtinurl = document.URL.split("/")[4]; // this is safe file name.
     var pagelist = document.querySelectorAll("div.mainContainer div.pageViewer > div.shadowOffset");
 
+
+    // simple check for pages
     var totalpgs = document.querySelector("div.mainContainer > div.toolbar > div > div.pageNavigationToolbarContainer > div > div > span").innerHTML;
 
     if (pagelist.length == totalpgs) {
@@ -34,12 +36,11 @@
         console.info("pages count match");
     }
 
-    // mark them with costum attribute
+    // mark them with costum attribute and create a container for all images.
     var container = document.createElement("div");
     container.id = "to-print";
     //container.innerHTML = "SHAHID";
     document.body.appendChild(container);
-
 
     for (let i of pagelist.entries()) {
         i[1].setAttribute("data-pgn", i[0]);
@@ -50,7 +51,7 @@
 
     }
 
-
+// create another link for total html download that copies form the container upon mouseleave.
     var a = document.querySelector("div.mainContainer > div.toolbar div.viewerToolbarContainer").appendChild(document.createElement("a"));
     a.innerText = 'html⏬'
     a.download = txtinurl + ".html";
@@ -61,13 +62,44 @@
     };
 
 
+    // recolor function. remove the blue!!
+    function recolorImage(canva){
+        var newRed=255, newGreen=255, newBlue=255;
+        var context = canva.getContext("2d");
+
+        var imageData = context.getImageData(0, 0, canva.width, canva.height);
+        var s = 10*4;
+        var oldRed=imageData.data[s], oldGreen=imageData.data[s+1], oldBlue=imageData.data[s+2];
+
+
+        // examine every pixel, 
+        // change any old rgb to the new-rgb
+        for (var i=0;i<imageData.data.length;i+=4)
+          {
+              if(i<10) console.log(imageData.data[i], imageData.data[i+1], imageData.data[i+2], imageData.data[i+3]);
+              // is this pixel the old rgb?
+              if(Math.abs(imageData.data[i]-oldRed) < 10 &&
+              Math.abs(imageData.data[i+1]-oldGreen) < 10 &&
+                Math.abs(imageData.data[i+2]-oldBlue) < 10
+              ){
+                  // change to your new rgb
+                  imageData.data[i]=newRed;
+                  imageData.data[i+1]=newGreen;
+                  imageData.data[i+2]=newBlue;
+                  //imageData.data[i+3]=255;
+              }
+          }
+        // put the altered data back on the canvas  
+        context.putImageData(imageData,0,0);
+    }
+
     // save
 
     function save(dt, i) {
         var anch = document.querySelector("#a" + i);
         anch.innerText += dt.substr(5, 25);
         if (dt.split(",")[0] == "data:image/png;base64") {
-            // varification...
+            // verification...
             anch.href = dt;
             document.querySelector("#i" + i).src = dt;
             //console.log("saving:" + i + ":"+ dt.substr(5, 25));
@@ -89,6 +121,11 @@
         var i = p.getAttribute('data-pgn');
         console.info(i + `-Added: ` + can.tagName);
 
+        // modify the canvas here
+        recolorImage(can);
+
+        // add individual links and then save to container
+
         if (p.querySelector("a.download") == null) {
             var link = document.createElement('a');
             link.id = "a" + i;
@@ -96,6 +133,7 @@
             link.innerText = i + "🔽";
             link.download = txtinurl + '-' + i + '.png';
             link.href = "#";
+            p.appendChild(link);
 
             setTimeout(() => {
                 // var dt = can.toDataURL("image/png");
@@ -106,14 +144,9 @@
             // as to refresh the link...
             link.onmouseleave = function () {
                 save(can.toDataURL("image/png"), i);
-                link.style.backgroung = 'yellow';
+                link.style.background = 'yellow';
             };
-
-            p.appendChild(link);
-
         }
-
-
     }
 
 
