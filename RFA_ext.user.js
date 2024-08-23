@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         RFA MRCOG tutorials
 // @namespace    https://github.com/drmdshahid
-// @version      1.6
+// @version      1.7
 // @description  Download course (canvas to PDF/html) from RFA Tutorials
 // @author       Shahid
 // @match        https://cdn.talentlms.com/rfatutors/*
@@ -22,6 +22,8 @@
     style.sheet.insertRule(".toolbar { background: radial-gradient(#004967, transparent); }");
     style.sheet.insertRule("a.download { background: beige; }");
     style.sheet.insertRule("@media print { body { visibility: hidden; }  #to-print {  visibility: visible; } }");
+    style.sheet.insertRule("#to-print { position: absolute; max-width: 10%; max-height: 90%; top: 10px; left: 5; overflow: scroll; z-index: 1; border-style: inset; } "); //new
+    style.sheet.insertRule("#to-print img { max-width: 95%; } "); //new
 
 
     var txtinurl = document.URL.split("/")[4]; // this is safe file name.
@@ -47,6 +49,7 @@
         const myImage = new Image(780); // based on 210mm x 297mm with 96dpi = 794,1123
         myImage.id = "i" + i[0];
         myImage.alt = i[0] + 1;
+        myImage.style.borderStyle = "outset" // to be able to see missing pages.  //new
         container.appendChild(myImage);
 
     }
