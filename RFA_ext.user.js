@@ -23,7 +23,7 @@
     style.sheet.insertRule("a.download { background: beige; }");
     style.sheet.insertRule("@media print { body { visibility: hidden; }  #to-print {  visibility: visible; } }");
     style.sheet.insertRule("#to-print { position: absolute; max-width: 10%; max-height: 90%; top: 10px; left: 5; overflow: scroll; z-index: 1; border-style: inset; } "); //new
-    style.sheet.insertRule("#to-print img { max-width: 95%; } "); //new
+    style.sheet.insertRule("#to-print img { max-width: 95%; border-style: outset;} "); //new
 
 
     var txtinurl = document.URL.split("/")[4]; // this is safe file name.
@@ -49,7 +49,7 @@
         const myImage = new Image(780); // based on 210mm x 297mm with 96dpi = 794,1123
         myImage.id = "i" + i[0];
         myImage.alt = i[0] + 1;
-        myImage.style.borderStyle = "outset" // to be able to see missing pages.  //new
+        // myImage.style.borderStyle = "outset" // to be able to see missing pages.  //new
         container.appendChild(myImage);
 
     }
@@ -125,7 +125,7 @@
         console.info(i + `-Added: ` + can.tagName);
 
         // modify the canvas here
-        recolorImage(can);
+        //recolorImage(can);
 
         // add individual links and then save to container
 
@@ -192,6 +192,26 @@
     // and process already loaded wrappers
 
 
+    // autoscroll
+    function autoscroll(timedelay=500,scrollHeight=100,start=0) {
+        var scrollId;
+        var bottom = document.body.scrollHeight -window.screen.height -scrollHeight;
+        document.documentElement.style.scrollBehavior = "auto";
+        document.documentElement.scrollTop = start; 
+        //document.documentElement.scrollIntoView();
+        document.documentElement.style.scrollBehavior = "smooth";
+        scrollId = setInterval(function () {
+            if (window.scrollY <= bottom) {
+                window.scrollBy(0, scrollHeight);
+            }
+            else {
+                clearInterval(scrollId);
+                console.log("scroll ended");
+            }
+            
+        }, timedelay);           
+    }
+    setTimeout(autoscroll,500);
 
 
 
