@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         RFA MRCOG tutorials
 // @namespace    https://github.com/drmdshahid
-// @version      1.7
+// @version      1.8
 // @description  Download course (canvas to PDF/html) from RFA Tutorials
 // @author       Shahid
 // @match        https://cdn.talentlms.com/rfatutors/*
