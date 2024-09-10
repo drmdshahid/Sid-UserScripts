@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         RFA MRCOG tutorials
 // @namespace    https://github.com/drmdshahid
-// @version      1.8
+// @version      1.9
 // @description  Download course (canvas to PDF/html) from RFA Tutorials
 // @author       Shahid
 // @match        https://cdn.talentlms.com/rfatutors/*
@@ -193,25 +193,10 @@
 
 
     // autoscroll
-    function autoscroll(timedelay=500,scrollHeight=100,start=0) {
-        var scrollId;
-        var bottom = document.body.scrollHeight -window.screen.height -scrollHeight;
-        document.documentElement.style.scrollBehavior = "auto";
-        document.documentElement.scrollTop = start; 
-        //document.documentElement.scrollIntoView();
-        document.documentElement.style.scrollBehavior = "smooth";
-        scrollId = setInterval(function () {
-            if (window.scrollY <= bottom) {
-                window.scrollBy(0, scrollHeight);
-            }
-            else {
-                clearInterval(scrollId);
-                console.log("scroll ended");
-            }
-            
-        }, timedelay);           
-    }
-    setTimeout(autoscroll,500);
+    wrappers.forEach((item,i) => {
+  setTimeout(() => {item.scrollIntoView()}, 1500*(i+1));
+});
+
 
 
 
